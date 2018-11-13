@@ -39,7 +39,8 @@
 				token="[[token]]"
 				is-holistic="[[isHolistic]]"
 				is-numeric="[[isNumeric]]"
-				read-only="[[readOnly]]">
+				read-only="[[readOnly]]"
+				selected-cell-num="{{selectedCellNum}}">
 			</d2l-rubric-criterion-mobile>
 			<d2l-button-subtle
 				class="add-feedback-button"
@@ -54,6 +55,7 @@
 					assessment-href="[[assessmentHref]]"
 					token="[[token]]"
 					adding-feedback="[[_cellAddingFeedback(criterionNum, _addingFeedback)]]"
+					selected-cell-num="[[selectedCellNum]]"
 				>
 				</d2l-rubric-feedback>
 			</template>
@@ -84,6 +86,10 @@
 				_addingFeedback: {
 					type: Number,
 					value: -1
+				},
+				selectedCellNum: {
+					type: Number,
+					value: null
 				}
 			},
 

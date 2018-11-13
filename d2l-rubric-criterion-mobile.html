@@ -196,7 +196,13 @@
 
 				_score: String,
 
-				readOnly: Boolean
+				readOnly: Boolean,
+				
+				selectedCellNum: {
+					type: Number,
+					value: null,
+					notify: true
+				},
 			},
 
 			behaviors: [
@@ -248,9 +254,11 @@
 				for (var i = 0; i < levelEntities.length; i++) {
 					if (this._getSelfLink(levelEntities[i]) === assessedLevelHref) {
 						this._selected = i;
+						this.selectedCellNum = i;
 						return;
 					}
 				}
+				this.selectedCellNum = null;
 			},
 
 			_hasDescription: function(criterionCell) {

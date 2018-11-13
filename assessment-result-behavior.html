@@ -160,7 +160,7 @@
 			return this._getItem(criterionEntity, assessmentResult, function(x) {return x.score;});
 		},
 
-		getAssessmentFeedback: function(criterionEntity, assessmentResult, html) {
+		getAssessmentFeedback: function(criterionEntity, assessmentResult, html, selectedCellNum = 0) {
 			if (!criterionEntity || !assessmentResult) {
 				return;
 			}
@@ -171,9 +171,9 @@
 			var assessedCriterionFeedback = assessedCriterion.getSubEntityByClass('feedback');
 			//if feedback does not exist on the criterion we try to get it from one of the criterion cells
 			if (!assessedCriterionFeedback) {
-				var firstCriterionCell = assessedCriterion.getSubEntitiesByClass('assessment-criterion-cell')[0];
-				if (firstCriterionCell) {
-					assessedCriterionFeedback = firstCriterionCell.getSubEntityByClass('feedback');
+				var criterionCell = assessedCriterion.getSubEntitiesByClass('assessment-criterion-cell')[selectedCellNum];
+				if (criterionCell) {
+					assessedCriterionFeedback = criterionCell.getSubEntityByClass('feedback');
 				}
 			}
 			if (!assessedCriterionFeedback || !assessedCriterionFeedback.properties) {
