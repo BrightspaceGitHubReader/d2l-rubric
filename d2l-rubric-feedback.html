@@ -83,7 +83,7 @@
 				</div>
 				<d2l-input-textarea
 					id="text-area"
-					value="[[getAssessmentFeedbackText(criterionEntity, assessmentResult, selectedCellNum)]]"
+					value="[[getAssessmentFeedbackText(criterionEntity, assessmentResult, selectedCellNums, criterionNum, selectedCellNum)]]"
 					placeholder="[[localize('editFeedback')]]"
 				>
 				</d2l-input-textarea>
@@ -92,7 +92,7 @@
 				<div class="feedback-container" data-mobile$="[[!_largeScreen]]">
 					<div class="feedback-heading">[[localize('feedback')]]</div>
 					<div class="feedback-text">
-						<s-html html="[[getAssessmentFeedbackHtml(criterionEntity, assessmentResult, selectedCellNum)]]"></s-html>
+						<s-html html="[[getAssessmentFeedbackHtml(criterionEntity, assessmentResult, selectedCellNums, criterionNum, selectedCellNum)]]"></s-html>
 					</div>
 				</div>
 			</div>
@@ -111,6 +111,14 @@
 					value: null
 				},
 				token: String,
+				selectedCellNums: {
+					type: Array,
+					value: function() {return [];}
+				},
+				criterionNum: {
+					type: Number,
+					value:null
+				},
 				selectedCellNum: {
 					type: Number,
 					value: null
@@ -171,12 +179,14 @@
 				return this._canEditFeedback(criterionEntity, assessmentEntity) || this.addingFeedback;
 			},
 
-			getAssessmentFeedbackHtml: function(criterionEntity, assessmentResult, selectedCellNum) {
-				return this.getAssessmentFeedback(criterionEntity, assessmentResult, true, selectedCellNum);
+			getAssessmentFeedbackHtml: function(criterionEntity, assessmentResult, selectedCellNums, criterionNum, selectedCellNum) {
+				var selectedCellNumber = selectedCellNums != null? selectedCellNums[criterionNum] : selectedCellNum;
+				return this.getAssessmentFeedback(criterionEntity, assessmentResult, true, selectedCellNumber);
 			},
 
-			getAssessmentFeedbackText: function(criterionEntity, assessmentResult, selectedCellNum) {
-				return this.getAssessmentFeedback(criterionEntity, assessmentResult, false, selectedCellNum);
+			getAssessmentFeedbackText: function(criterionEntity, assessmentResult, selectedCellNums, criterionNum, selectedCellNum) {
+				var selectedCellNumber = selectedCellNums != null? selectedCellNums[criterionNum] : selectedCellNum;
+				return this.getAssessmentFeedback(criterionEntity, assessmentResult, false, selectedCellNumber);
 			}
 		});
 	</script>

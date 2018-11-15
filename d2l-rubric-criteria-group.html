@@ -157,6 +157,7 @@
 							<d2l-td tabindex="0" class$="[[_getCriteriaClassName(criterionCell, assessmentResult, noBottomCells, criterionNum, _criteriaEntities, cellNum)]]" on-tap="handleTap" on-keypress="handleKey" data-href$="[[_getSelfLink(criterionCell)]]">
 								<d2l-rubric-criterion-cell href="[[_getSelfLink(criterionCell)]]" token="[[token]]" assessment-href="[[assessmentHref]]"/>
 							</d2l-td>
+							[[_updateSelectedCellNums(criterionCell, assessmentResult, cellNum, criterionNum)]]
 						</template>
 						<template is="dom-if" if="[[_hasOutOf(entity)]]">
 							<d2l-td class$="[[_getOutOfClassName(criterion, assessmentResult)]]" on-tap="_handleOverrideScore" tabindex="0" on-keypress="_handleScoreKeypress">
@@ -183,7 +184,8 @@
 								assessment-href="[[assessmentHref]]"
 								token="[[token]]"
 								read-only="[[readOnly]]"
-								selected-cell-num="[[_getSelectedCellNum()]]"
+								selected-cell-nums="[[selectedCellNums]]"
+								criterion-num="[[criterionNum]]"
 							>
 							</d2l-rubric-feedback>
 						</d2l-tspan>
@@ -242,6 +244,10 @@
 				telemetryData: {
 					type: Object,
 					value: null
+				},
+				selectedCellNums: {
+					type: Array,
+					value: function() { return [];}
 				}
 			},
 
@@ -260,9 +266,12 @@
 				'_updateFeedbackDisplay(_criteriaEntities, assessmentResult)'
 			],
 
-			selectedCellNum: {
-				type: Number,
-				value: null
+			_updateSelectedCellNums : function(criterionCell, assessmentResult, cellNum, criterionNum) {
+				if (this._isSelected(criterionCell, assessmentResult)) {
+					this.selectedCellNums[criterionNum] = cellNum;
+				} else if (this.selectedCellNums[criterionNum] === cellNum) {
+					this.selectedCellNums[criterionNum] = null;
+				}
 			},
 
 			_onEntityChanged: function(entity) {
@@ -432,12 +441,6 @@
 				return selfLink && assessmentResult && assessmentResult[selfLink];
 			},
 
-			_getSelectedCellNum: function() {
-				var selectedCellNum = this.selectedCellNum;
-				this.selectedCellNum = null;
-				return selectedCellNum;
-			},
-
 			_hasBottom: function(criterionCell, assessmentResult, noBottomCells, criterionNum, criteria, addingFeedback) {
 				var selfLink = this._getSelfLink(criterionCell);
 
@@ -455,7 +458,6 @@
 			_getCriteriaClassName: function(criterionCell, assessmentResult, noBottomCells, criterionNum, criteriaEntities, cellNum) {
 				var className = 'criterion-cell';
 				if (this._isSelected(criterionCell, assessmentResult)) {
-					this.selectedCellNum = cellNum;
 					className += ' selected';
 				}
 				if (!this.readOnly && this.canAssessCriterionCell(this._getSelfLink(criterionCell))) {
