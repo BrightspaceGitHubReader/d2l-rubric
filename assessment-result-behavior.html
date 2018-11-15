@@ -160,7 +160,7 @@
 			return this._getItem(criterionEntity, assessmentResult, function(x) {return x.score;});
 		},
 
-		getAssessmentFeedback: function(criterionEntity, assessmentResult, html, selectedCellNum = 0) {
+		getAssessmentFeedback: function(criterionEntity, assessmentResult, selectedCellNum, html) {
 			if (!criterionEntity || !assessmentResult) {
 				return;
 			}
@@ -170,7 +170,7 @@
 			}
 			var assessedCriterionFeedback = assessedCriterion.getSubEntityByClass('feedback');
 			//if feedback does not exist on the criterion we try to get it from one of the criterion cells
-			if (!assessedCriterionFeedback) {
+			if (!assessedCriterionFeedback && (selectedCellNum != null)) {
 				var criterionCell = assessedCriterion.getSubEntitiesByClass('assessment-criterion-cell')[selectedCellNum];
 				if (criterionCell) {
 					assessedCriterionFeedback = criterionCell.getSubEntityByClass('feedback');

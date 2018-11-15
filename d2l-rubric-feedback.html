@@ -181,12 +181,12 @@
 
 			getAssessmentFeedbackHtml: function(criterionEntity, assessmentResult, selectedCellNums, criterionNum, selectedCellNum) {
 				var selectedCellNumber = selectedCellNums != null? selectedCellNums[criterionNum] : selectedCellNum;
-				return this.getAssessmentFeedback(criterionEntity, assessmentResult, true, selectedCellNumber);
+				return this.getAssessmentFeedback(criterionEntity, assessmentResult, selectedCellNumber, true);
 			},
 
 			getAssessmentFeedbackText: function(criterionEntity, assessmentResult, selectedCellNums, criterionNum, selectedCellNum) {
 				var selectedCellNumber = selectedCellNums != null? selectedCellNums[criterionNum] : selectedCellNum;
-				return this.getAssessmentFeedback(criterionEntity, assessmentResult, false, selectedCellNumber);
+				return this.getAssessmentFeedback(criterionEntity, assessmentResult, selectedCellNumber, false);
 			}
 		});
 	</script>

@@ -129,12 +129,12 @@
 			},
 
 			_hasFeedback: function(criterionEntity, assessmentResult) {
-				return !!this.getAssessmentFeedback(criterionEntity, assessmentResult);
+				return !!this.getAssessmentFeedback(criterionEntity, assessmentResult, 1);
 			},
 
 			_getFeedback: function(entity, assessmentResult) {
 				if (entity && assessmentResult) {
-					return this.getAssessmentFeedback(entity, assessmentResult);
+					return this.getAssessmentFeedback(entity, assessmentResult, 1);
 				}
 			},
 
