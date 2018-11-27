@@ -10,6 +10,7 @@
 <link rel="import" href="../d2l-table/d2l-scroll-wrapper.html">
 <link rel="import" href="../d2l-icons/tier1-icons.html">
 <link rel="import" href="../d2l-polymer-siren-behaviors/store/siren-action-behavior.html">
+<link rel="import" href="../d2l-button/d2l-button-subtle.html">
 
 <dom-module id="d2l-rubric-overall-score">
 	<template strip-whitespace>
@@ -86,21 +87,14 @@
 				color: var(--d2l-color-celestine);
 			}
 
-			.clear-override-label {
-				color: var(--d2l-color-celestine);
-				text-align: center;
-				font-size: 0.85rem;
+			.clear-override-button-container {
+				display: flex;
 			}
 
-			.clear-override-label > d2l-icon {
-				color: var(--d2l-color-celestine);
-				vertical-align: middle;
-				margin-left: 5px;
-				margin-right: 5px;
-			}
-
-			.clear-override-label > b {
-				vertical-align: middle;
+			.clear-override-button {
+				margin-left: auto;
+				margin-right: auto;
+				display: inline-flex
 			}
 
 			d2l-scroll-wrapper {
@@ -153,9 +147,15 @@
 						<br hidden="[[!_scoreVisible(level)]]">
 						<s-html hidden="[[!_getDescriptionHtml(level)]]" html$="[[_getDescriptionHtml(level)]]"></s-html>
 					</span>
-					<div class="clear-override-label" hidden="[[!_showClearOverrideButton(level, _version)]]">
-						<d2l-icon icon="d2l-tier1:close-small"></d2l-icon>
-						<b>[[localize('clearOverride')]]</b>
+					<div class="clear-override-button-container">
+						<d2l-button-subtle
+							class="clear-override-button"
+							icon="d2l-tier1:close-default"
+							text=[[localize('clearTotalScoreOverride')]]
+							on-tap="_clearOverride"
+							hidden$="[[!_showClearOverrideButton(level, _version)]]"
+						>
+						</d2l-button-subtle>
 					</div>
 				</div>
 			</template>
@@ -301,6 +301,14 @@
 				window.D2L.Rubric.Assessment.promise.then(
 					function() {
 						return this.performSirenAction(action).catch(console.error); // eslint-disable-line no-console
+					}.bind(this)
+				);
+			},
+
+			_clearOverride: function() {
+				window.D2L.Rubric.Assessment.promise.then(
+					function() {
+						return this.performSirenAction(assessmentLevelEntity.getActionByName('remove-overall-level-override')).catch(console.error); // eslint-disable-line no-console
 					}.bind(this)
 				);
 			},
