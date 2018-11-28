@@ -152,7 +152,7 @@
 							class="clear-override-button"
 							icon="d2l-tier1:close-default"
 							text=[[localize('clearTotalScoreOverride')]]
-							on-tap="_clearOverride"
+							on-tap="_clearOverride(level, _version)"
 							hidden$="[[!_showClearOverrideButton(level, _version)]]"
 						>
 						</d2l-button-subtle>
@@ -305,7 +305,12 @@
 				);
 			},
 
-			_clearOverride: function() {
+			_clearOverride: function(levelEntity) {
+				var assessmentLevelEntity = this._getAssessmentLevel(levelEntity);
+				if (!assessmentLevelEntity) {
+					return null;
+				}
+
 				window.D2L.Rubric.Assessment.promise.then(
 					function() {
 						return this.performSirenAction(assessmentLevelEntity.getActionByName('remove-overall-level-override')).catch(console.error); // eslint-disable-line no-console
