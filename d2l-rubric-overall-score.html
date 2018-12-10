@@ -28,6 +28,10 @@
 				@apply --d2l-heading-3;
 			}
 
+			h2 {
+				@apply --d2l-heading-2;
+			}
+
 			.overall-levels {
 				width: 100%;
 				display: flex;
@@ -131,7 +135,7 @@
 
 	<siren-entity href="[[assessmentHref]]" token="[[token]]" entity="{{_assessmentEntity}}"></siren-entity>
 	<iron-media-query query="(min-width: 615px)" query-matches="{{_largeScreen}}"></iron-media-query>
-	<h3>[[localize('overallScore')]]</h3>
+	<h2>[[localize('overallScore')]]</h2>
 	<d2l-scroll-wrapper	show-actions>
 		<div class="overall-levels" data-mobile$="[[!_largeScreen]]" >
 			<template is="dom-repeat" items="[[_levels]]" as="level">

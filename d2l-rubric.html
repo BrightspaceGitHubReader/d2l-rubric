@@ -67,6 +67,17 @@ Polymer Web-Component to display rubrics
 					margin: 2.33em 0;
 				};
 			}
+			.quote-icon {
+				display: inline-flex;
+				padding-right: 12px;
+				margin-top: 1rem;
+			}
+			.feedback-body {
+				display: flex;
+				margin-top: calc( 18px - 1rem );
+				padding-right: 0.5rem;
+				padding-bottom: 30px;
+			}
 			.score-wrapper {
 				pointer-events: none;
 				padding-top: 0.5rem;
@@ -146,6 +157,7 @@ Polymer Web-Component to display rubrics
 			.overall-feedback-header {
 				@apply --d2l-label-text;
 				padding-top: 1.5rem;
+				font-size: 1rem;
 			}
 			.overall-feedback-text {
 				@apply --d2l-body-compact-text;
@@ -230,7 +242,10 @@ Polymer Web-Component to display rubrics
 		</template>
 		<div hidden$="[[!_hasOverallFeedback(_feedback)]]">
 			<div class="overall-feedback-header">[[localize('overallFeedback')]]</div>
-			<s-html class="overall-feedback-text" html$="[[_feedback]]"></s-html>
+			<div class="feedback-body">
+				<d2l-icon class="quote-icon" icon='d2l-tier1:check'></d2l-icon>
+				<s-html class="overall-feedback-text" html$="[[_feedback]]"></s-html>
+			</div>
 		</div>
 	</template>
 

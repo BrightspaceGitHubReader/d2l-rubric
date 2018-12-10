@@ -17,6 +17,16 @@
 			:host {
 				display: block;
 			}
+			.quote-icon {
+				display: inline-flex;
+				padding-right: 12px;
+			}
+			.feedback-body {
+				display: flex;
+				padding-right: 0.5rem;
+				padding-top: calc( 24px - 0.5rem);
+				padding-bottom: calc( 24px - 0.5rem);
+			}
 			.feedback-arrow {
 				margin-top: calc(-0.5rem - 25px);
 				width: 0;
@@ -68,8 +78,8 @@
 				margin-left: 1rem;
 			}
 			.feedback-text {
+				display: inline-flex;
 				@apply --d2l-body-compact-text;
-				margin: 0.5rem 0;
 			}
 			.feedback-container[data-mobile] {
 				margin-top: 24px;
@@ -108,10 +118,13 @@
 			</div>
 			<div hidden="[[_hasReadonlyFeedback(criterionEntity, assessmentResult)]]">
 				<div class="feedback-container" data-mobile$="[[!_largeScreen]]">
-					<div class="feedback-heading">[[localize('feedback')]]</div>
-					<div class="feedback-text">
-						<s-html html="[[getAssessmentFeedbackHtml(criterionEntity, assessmentResult)]]"></s-html>
+					<div class="feedback-body">
+						<d2l-icon class="quote-icon" icon='d2l-tier1:check'></d2l-icon>
+						<div class="feedback-text">
+							<s-html html="[[getAssessmentFeedbackHtml(criterionEntity, assessmentResult)]]"></s-html>
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
