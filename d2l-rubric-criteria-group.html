@@ -157,6 +157,7 @@
 									text="[[localize('addFeedback')]]"
 									on-tap="_handleAddFeedback"
 									data-criterion$="[[criterionNum]]"
+									addFeedback
 								></d2l-button-subtle>
 							</d2l-td>
 						</template>
@@ -192,6 +193,9 @@
 								token="[[token]]"
 								read-only="[[readOnly]]"
 								on-close-feedback="_closeFeedback"
+								on-tap="_handleAddFeedback"
+								on-mouseover="_hoverFeedbackOn"
+								on-mouseout="_hoverFeedbackOff"
 							>
 							</d2l-rubric-feedback>
 						</d2l-tspan>
@@ -511,9 +515,25 @@
 
 			_handleAddFeedback: function(event) {
 				var criterionNum = event.model.get('criterionNum');
-				this._addingFeedback = criterionNum;
+				if (event.currentTarget.hasAttribute("addFeedback")) {
+					this._addingFeedback = criterionNum;
+				}
 				fastdom.mutate(function() {
 					Polymer.dom(this.root).querySelector('#feedback-inner' + criterionNum).focus();
+				}.bind(this));
+			},
+
+			_hoverFeedbackOn: function(event) {
+				var criterionNum = event.model.get('criterionNum');
+				fastdom.mutate(function() {
+					Polymer.dom(this.root).querySelector('#feedback-inner' + criterionNum).addBorderToFeedbackWrapper();
+				}.bind(this));
+			},
+
+			_hoverFeedbackOff: function(event) {
+				var criterionNum = event.model.get('criterionNum');
+				fastdom.mutate(function() {
+					Polymer.dom(this.root).querySelector('#feedback-inner' + criterionNum).removeBorderFromFeedbackWrapper();
 				}.bind(this));
 			},
 
