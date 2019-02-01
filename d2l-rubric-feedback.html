@@ -29,7 +29,7 @@
 			}
 			.feedback-arrow-inner1 {
 				position: relative;
-				top: 1px;
+				top: 0;
 				left: -12px;
 				width: 0;
 				height: 0;
@@ -40,13 +40,13 @@
 			}
 			.feedback-arrow-inner2 {
 				position: relative;
-				top: -7px;
+				top: -10px;
 				left: -12px;
 				width: 0;
 				height: 0;
 				border-left: 12px solid transparent;
 				border-right: 12px solid transparent;
-				border-bottom: 11px solid white;
+				border-bottom: 12px solid white;
 			}
 			.clear-feedback-button {
 				margin-top: -1px;
@@ -198,6 +198,7 @@
 				feedbackWrapper.style.borderWidth = '2px';
 				var feedbackArrowInner1 = feedbackWrapper.firstChild.firstChild;
 				feedbackArrowInner1.style.borderBottomColor = '#006fbf';
+				feedbackArrowInner1.style.top = '-1px';
 			},
 
 			removeBorderFromFeedbackWrapper: function() {
@@ -209,6 +210,7 @@
 					feedbackWrapper.style.borderColor = '';
 					var feedbackArrowInner1 = feedbackWrapper.firstChild.firstChild;
 					feedbackArrowInner1.style.borderBottomColor = '#d3d9e3';
+					feedbackArrowInner1.style.top = '0';
 				}
 			},
 
