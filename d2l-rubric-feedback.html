@@ -17,8 +17,7 @@
 			:host {
 				display: block;
 			}
-			.feedback-arrow,
-			:host([_hovered]) .feedback-arrow {
+			.feedback-arrow {
 				margin-top: calc(-0.5rem - 25px);
 				width: 0;
 				height: 0;
@@ -38,8 +37,7 @@
 			:host([_hovered]) .feedback-arrow {
 				border-bottom-color: var(--d2l-color-celestine);
 			}
-			.feedback-arrow-inner,
-			:host([_hovered]) .feedback-arrow-inner {
+			.feedback-arrow-inner {
 				position: relative;
 				left: -12px;
 				width: 0;
@@ -110,7 +108,7 @@
 		<iron-media-query query="(min-width: 615px)" query-matches="{{_largeScreen}}"></iron-media-query>
 		<siren-entity href="[[assessmentHref]]" token="[[token]]" entity="{{assessmentEntity}}"></siren-entity>
 		<siren-entity href="[[criterionHref]]" token="[[token]]" entity="{{criterionEntity}}"></siren-entity>
-		<div class="feedback-wrapper"data-desktop$="[[_largeScreen]]">
+		<div class="feedback-wrapper"data-desktop$="[[_largeScreen]]" on-mouseover="_addFocusStylingToFeedbackWrapper" on-mouseout="_removeFocusStylingFromFeedbackWrapper">
 			<div class="feedback-arrow" data-mobile$="[[!_largeScreen]]">
 				<div class="feedback-arrow-inner"></div>
 			</div>
@@ -197,21 +195,21 @@
 				var elem = Polymer.dom(this.root).querySelector('d2l-input-textarea');
 				elem.focus();
 				this._feedbackInFocus = true;
-				this.addFocusStylingToFeedbackWrapper();
+				this._addFocusStylingToFeedbackWrapper();
 			},
 
 			_blurHandler: function(event) {
 				var feedback = event.target.$.textarea.value;
 				this.saveFeedback(feedback);
 				this._feedbackInFocus = false;
-				this.removeFocusStylingFromFeedbackWrapper();
+				this._removeFocusStylingFromFeedbackWrapper();
 			},
 
-			addFocusStylingToFeedbackWrapper: function() {
+			_addFocusStylingToFeedbackWrapper: function() {
 				this._hovered = true;
 			},
 
-			removeFocusStylingFromFeedbackWrapper: function() {
+			_removeFocusStylingFromFeedbackWrapper: function() {
 				if (!this._feedbackInFocus) {
 					this._hovered = false;
 				}

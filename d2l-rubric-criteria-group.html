@@ -194,8 +194,6 @@
 								read-only="[[readOnly]]"
 								on-close-feedback="_closeFeedback"
 								on-tap="_handleAddFeedback"
-								on-mouseover="_hoverFeedbackOn"
-								on-mouseout="_hoverFeedbackOff"
 							>
 							</d2l-rubric-feedback>
 						</d2l-tspan>
@@ -520,20 +518,6 @@
 				}
 				fastdom.mutate(function() {
 					Polymer.dom(this.root).querySelector('#feedback-inner' + criterionNum).focus();
-				}.bind(this));
-			},
-
-			_hoverFeedbackOn: function(event) {
-				var criterionNum = event.model.get('criterionNum');
-				fastdom.mutate(function() {
-					Polymer.dom(this.root).querySelector('#feedback-inner' + criterionNum).addFocusStylingToFeedbackWrapper();
-				}.bind(this));
-			},
-
-			_hoverFeedbackOff: function(event) {
-				var criterionNum = event.model.get('criterionNum');
-				fastdom.mutate(function() {
-					Polymer.dom(this.root).querySelector('#feedback-inner' + criterionNum).removeFocusStylingFromFeedbackWrapper();
 				}.bind(this));
 			},
 
