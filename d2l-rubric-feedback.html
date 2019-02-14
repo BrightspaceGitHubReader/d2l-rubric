@@ -34,7 +34,7 @@
 			.feedback-arrow[data-mobile] {
 				display: none;
 			}
-			:host([_hovered]) .feedback-arrow {
+			:host([_focus-styling]) .feedback-arrow {
 				border-bottom-color: var(--d2l-color-celestine);
 			}
 			.feedback-arrow-inner {
@@ -51,7 +51,7 @@
 			.feedback-arrow-inner {
 				top: 2px;
 			}
-			:host([_hovered]) .feedback-arrow-inner {
+			:host([_focus-styling]) .feedback-arrow-inner {
 				top: 3px;
 			}
 			.clear-feedback-button {
@@ -77,7 +77,7 @@
 			.feedback-wrapper-editable:hover .feedback-arrow-inner {
 				border-bottom: 12px solid var(--d2l-color-sylvite);
 			}
-			:host([_hovered]) .feedback-wrapper {
+			:host([_focus-styling]) .feedback-wrapper {
 				cursor: text;
 				padding: calc(0.5rem - 1px);
 				padding-left: calc(1rem - 1px);
@@ -157,6 +157,18 @@
 						return this._blurHandler.bind(this);
 					}
 				},
+				_boundFocusOutHandler: {
+					type: Function,
+					value: function() {
+						return this._focusOutHandler.bind(this);
+					}
+				},
+				_boundFocusInHandler: {
+					type: Function,
+					value: function() {
+						return this._focusInHandler.bind(this);
+					}
+				},
 				addingFeedback: {
 					type: Boolean,
 					value: false
@@ -165,7 +177,7 @@
 					type: Boolean,
 					value: false
 				},
-				_hovered: {
+				_focusStyling: {
 					type: Boolean,
 					value: false,
 					reflectToAttribute: true
@@ -183,35 +195,47 @@
 					return;
 				}
 				elem.addEventListener('blur', this._boundBlurHandler);
+				var feedbackWrapper = Polymer.dom(this.root).querySelector('.feedback-wrapper');
+				feedbackWrapper.addEventListener('focusout', this._boundFocusOutHandler);
+				feedbackWrapper.addEventListener('focusin', this._boundFocusInHandler);
 			},
 
 			detached: function() {
 				var elem = Polymer.dom(this.root).querySelector('d2l-input-textarea');
 				if (!elem) return;
 				elem.removeEventListener('blur', this._boundBlurHandler);
+				var feedbackWrapper = Polymer.dom(this.root).querySelector('.feedback-wrapper');
+				feedbackWrapper.removeEventListener('focusout', this._boundFocusOutHandler);
+				feedbackWrapper.removeEventListener('focusin', this._boundFocusInHandler);
 			},
 
 			focus: function() {
 				var elem = Polymer.dom(this.root).querySelector('d2l-input-textarea');
 				elem.focus();
+			},
+
+			_focusInHandler: function() {
 				this._feedbackInFocus = true;
 				this._addFocusStylingToFeedbackWrapper();
+			},
+
+			_focusOutHandler: function() {
+				this._feedbackInFocus = false;
+				this._removeFocusStylingFromFeedbackWrapper();
 			},
 
 			_blurHandler: function(event) {
 				var feedback = event.target.$.textarea.value;
 				this.saveFeedback(feedback);
-				this._feedbackInFocus = false;
-				this._removeFocusStylingFromFeedbackWrapper();
 			},
 
 			_addFocusStylingToFeedbackWrapper: function() {
-				this._hovered = true;
+				this._focusStyling = true;
 			},
 
 			_removeFocusStylingFromFeedbackWrapper: function() {
 				if (!this._feedbackInFocus) {
-					this._hovered = false;
+					this._focusStyling = false;
 				}
 			},
 
