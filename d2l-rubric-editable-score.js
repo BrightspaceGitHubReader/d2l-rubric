@@ -16,10 +16,15 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 		<style>
 			:host {
 				display: block;
+				box-sizing: border-box;
 			}
-			:host([score-overridden]) {
+			:host([override-styling]) {
 				border-radius: 0.3rem;
 				background-color: var(--d2l-color-celestine-plus-2);
+			}
+			:host(:hover:not([editor-styling])) {
+				border-radius: 0.3rem;
+				border: 1px solid var(--d2l-color-celestine);
 			}
 			.total-score-container {
 				display: flex;
@@ -43,7 +48,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			.right {
 				display: inline;
 				padding: 0 5px;
-				line-height: 2.2rem;
 			}
 			[hidden] {
 				display: none;
@@ -93,6 +97,15 @@ Polymer({
 		scoreOverridden: {
 			type: Boolean,
 			value: false,
+		},
+		overrideStyling: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true
+		},
+		editorStyling: {
+			type: Boolean,
+			value: false,
 			reflectToAttribute: true
 		},
 		totalScore: {
@@ -120,7 +133,8 @@ Polymer({
 
 	observers: [
 		'_onAssessmentResultChanged(entity, assessmentResult)',
-		'_totalScoreChanged(totalScore, entity)'
+		'_totalScoreChanged(totalScore, entity)',
+		'_editingState(entity,criterionNum, editingScore)'
 	],
 
 	_onAssessmentResultChanged: function(entity, assessmentResult) {
@@ -132,8 +146,8 @@ Polymer({
 			this.scoreOverridden = this.isTotalScoreOverridden();
 			return;
 		}
-
 		this.scoreOverridden = this.isScoreOverridden(this.criterionHref);
+		this.overrideStyling = this.scoreOverridden;
 	},
 
 	focus: function() {
@@ -262,6 +276,19 @@ Polymer({
 			this.fire('d2l-rubric-total-score-changed', {score:score, outOf: outOf.toString()});
 		} else if (score) {
 			this.fire('d2l-rubric-total-score-changed', {score:score});
+		}
+	},
+	_editingState: function(entity, criterionNum, editingScore) {
+		if (!entity) {
+			return;
+		}
+		if (this._isEditingScore(criterionNum, editingScore)) {
+			this.editorStyling = true;
+			this.overrideStyling = false;
+		}
+		if (!this._isEditingScore(criterionNum, editingScore) && this.scoreOverridden) {
+			this.editorStyling = false;
+			this.overrideStyling = true;
 		}
 	}
 });

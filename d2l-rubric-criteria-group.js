@@ -58,12 +58,6 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric-criteria-gro
 				padding: calc(0.3rem - 1px);
 				min-width: 70px;
 			}
-			d2l-rubric-editable-score:hover:not(:focus) {
-				padding: calc(0.3rem - 2px);
-				border-radius: 0.3rem;
-				border: 1px solid var(--d2l-color-celestine);
-			}
-
 			.level-name {
 				font-weight: 700;
 			}
