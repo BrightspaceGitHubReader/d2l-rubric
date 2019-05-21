@@ -17,6 +17,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			:host {
 				display: block;
 			}
+			:host([score-overridden]) {
+				border-radius: 0.3rem;
+				background-color: var(--d2l-color-celestine-plus-2);
+			}
 			.total-score-container {
 				display: flex;
 				justify-content: center;
@@ -88,7 +92,8 @@ Polymer({
 		},
 		scoreOverridden: {
 			type: Boolean,
-			value: false
+			value: false,
+			reflectToAttribute: true
 		},
 		totalScore: {
 			type: String,
