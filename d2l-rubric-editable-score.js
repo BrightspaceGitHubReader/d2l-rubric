@@ -16,15 +16,20 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 		<style>
 			:host {
 				display: block;
-				box-sizing: border-box;
 			}
-			:host([override-styling]) {
-				border-radius: 0.3rem;
-				background-color: var(--d2l-color-celestine-plus-2);
-			}
-			:host(:hover:not([editor-styling])) {
-				border-radius: 0.3rem;
-				border: 1px solid var(--d2l-color-celestine);
+			@media screen and (min-width: 614px) {
+				:host {
+					padding: 0.5rem 0.5rem 0.5rem 0.6rem;
+				}
+				:host([override-styling]) {
+					border-radius: 0.3rem;
+					background-color: var(--d2l-color-celestine-plus-2);
+				}
+				:host(:hover:not([editor-styling]))  {
+					padding: calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.6rem - 1px);
+					border-radius: 0.3rem;
+					border: 1px solid var(--d2l-color-celestine);
+				}		
 			}
 			.total-score-container {
 				display: flex;
@@ -144,6 +149,7 @@ Polymer({
 
 		if (this.totalScore) {
 			this.scoreOverridden = this.isTotalScoreOverridden();
+			this.overrideStyling = this.scoreOverridden;
 			return;
 		}
 		this.scoreOverridden = this.isScoreOverridden(this.criterionHref);
@@ -286,9 +292,11 @@ Polymer({
 			this.editorStyling = true;
 			this.overrideStyling = false;
 		}
-		if (!this._isEditingScore(criterionNum, editingScore) && this.scoreOverridden) {
+		if (!this._isEditingScore(criterionNum, editingScore)) {
 			this.editorStyling = false;
-			this.overrideStyling = true;
+			if (this.scoreOverridden) {
+				this.overrideStyling = true;
+			}
 		}
 	}
 });

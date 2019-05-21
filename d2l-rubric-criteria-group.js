@@ -55,7 +55,6 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric-criteria-gro
 				text-align: center;
 			}
 			d2l-rubric-editable-score {
-				padding: calc(0.3rem - 1px);
 				min-width: 70px;
 			}
 			.level-name {
