@@ -9,6 +9,7 @@ import './rubric-siren-entity.js';
 import 'd2l-tooltip/d2l-tooltip.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import {dom} from "@polymer/polymer/lib/legacy/polymer.dom";
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
@@ -36,8 +37,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				justify-content: center;
 			}
 			d2l-input-text {
-				max-width: 150px;
-				min-width: 75px;
+				width:75px;
 			}
 			.score-out-of.overridden {
 				color: var(--d2l-color-celestine);
@@ -65,11 +65,12 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			</d2l-input-text>
 			<div id="out-of" class="right">[[_localizeOutOf(entity)]]</div>
 		</div>
-		<div hidden="[[_isEditingScore(criterionNum, editingScore)]]" class$="[[_getOutOfClassName(scoreOverridden)]]">
+		<div hidden="[[_isEditingScore(criterionNum, editingScore)]]" class$="[[_getOutOfClassName(scoreOverridden)]]" id="out-of-container">
 			[[_localizeOutOf(entity, assessmentResult, totalScore)]]
 			<div class="star" id="score-overridden-star">*</div>
 			<d2l-tooltip for="score-overridden-star" position="bottom">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
 		</div>
+		<d2l-tooltip id="override-tooltip" hidden$="[[!scoreOverridden]]" force-show="[[_hasFocus]]" for="out-of-container" position="top">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
 	</template>
 
 	
@@ -128,6 +129,10 @@ Polymer({
 		parentCell: {
 			type: Object,
 			value: null
+		},
+		_hasFocus: {
+			type: Boolean,
+			value: false
 		}
 	},
 
@@ -141,7 +146,18 @@ Polymer({
 		'_totalScoreChanged(totalScore, entity)',
 		'_editingState(entity,criterionNum, editingScore)'
 	],
-
+	ready: function() {
+		this._onTapAnywhere = this._onTapAnywhere.bind(this);
+	},
+	attached: function() {
+		document.addEventListener('click', this._onTapAnywhere);
+	},
+	detached: function() {
+		document.removeEventListener('click', this._onTapAnywhere);
+	},
+	_onTapAnywhere: function() {
+		this._hasFocus = false;
+	},
 	_onAssessmentResultChanged: function(entity, assessmentResult) {
 		if (!entity || !assessmentResult) {
 			return;
@@ -150,10 +166,12 @@ Polymer({
 		if (this.totalScore) {
 			this.scoreOverridden = this.isTotalScoreOverridden();
 			this.overrideStyling = this.scoreOverridden;
+			this._hasFocus = this.scoreOverridden;
 			return;
 		}
 		this.scoreOverridden = this.isScoreOverridden(this.criterionHref);
 		this.overrideStyling = this.scoreOverridden;
+		this._hasFocus = this.scoreOverridden;
 	},
 
 	focus: function() {

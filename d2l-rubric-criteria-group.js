@@ -46,6 +46,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric-criteria-gro
 			}
 			d2l-table[type="default"] d2l-td.out-of.assessable {
 				pointer-events: auto;
+				max-width: 75px;
 			}
 			d2l-td.out-of.assessable:hover {
 				color: var(--d2l-color-celestine);
