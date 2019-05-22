@@ -9,7 +9,6 @@ import './rubric-siren-entity.js';
 import 'd2l-tooltip/d2l-tooltip.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
-import {dom} from "@polymer/polymer/lib/legacy/polymer.dom";
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
@@ -18,7 +17,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			:host {
 				display: block;
 			}
-			@media screen and (min-width: 614px) {
+			@media screen and (min-width: 615px) {
 				:host {
 					padding: 0.5rem 0.5rem 0.5rem 0.6rem;
 				}
@@ -54,6 +53,25 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				display: inline;
 				padding: 0 5px;
 			}
+			.clear-override-button-mobile {
+				display: none;
+			} 
+			.override-label {
+				display: none;
+			} 
+			@media screen and (max-width: 614px) {
+				.clear-override-button-mobile {
+					display: inline;
+					margin-right: 35%;
+				}
+				.override-label {
+					display: inline;
+					margin-right: 35%;
+					font-size: 15px;
+					font-weight: bold;
+					color: var(--d2l-color-ferrite) !important;
+				}
+			}
 			[hidden] {
 				display: none;
 			}
@@ -61,6 +79,9 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 		<rubric-siren-entity href="[[assessmentHref]]" token="[[token]]" entity="{{assessmentEntity}}"></rubric-siren-entity>
 		<rubric-siren-entity href="[[criterionHref]]" token="[[token]]" entity="{{entity}}"></rubric-siren-entity>
 		<div class$="[[_getContainerClassName(criterionHref)]]" hidden="[[!_isEditingScore(criterionNum, editingScore)]]">
+			<d2l-button-subtle class="clear-override-button-mobile" id="clear-button" text="[[localize('clearOverride')]]" on-tap="_clearCriterionOverride" hidden$="[[!scoreOverridden]]">
+			</d2l-button-subtle>
+			<b class="override-label" hidden$="[[scoreOverridden]]">[[localize('overrideLabel')]]</b>
 			<d2l-input-text id="text-area" value="[[getScore(entity, assessmentResult, totalScore)]]" type="number" step="any" min="0" max="100000" on-blur="_blurHandler" on-keypress="_handleKey" prevent-submit="">
 			</d2l-input-text>
 			<div id="out-of" class="right">[[_localizeOutOf(entity)]]</div>
@@ -203,6 +224,9 @@ Polymer({
 	},
 
 	_blurHandler: function(event) {
+		if (event.relatedTarget && event.relatedTarget.id === 'clear-button') {
+			return;
+		}
 		var innerInput = event.target.$$('input');
 		if (!innerInput || !innerInput.checkValidity()) {
 			return;
@@ -235,6 +259,12 @@ Polymer({
 		} else {
 			this.clearTotalScoreOverride();
 		}
+	},
+
+	_clearCriterionOverride: function(event) {
+		event.stopPropagation();
+		this.editingScore = -1;
+		this.clearCriterionOverride(this.criterionHref);
 	},
 
 	getScore: function(entity, assessmentResult, totalScore) {

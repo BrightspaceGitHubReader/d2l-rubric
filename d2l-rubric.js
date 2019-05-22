@@ -72,6 +72,9 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric">
 			}
 			.score-wrapper {
 				pointer-events: none;
+				padding-top: 0.5rem;
+				padding-bottom: 0.5rem;
+				padding-left: 0.6rem;
 			}
 			.score-wrapper.assessable {
 				pointer-events: auto;
