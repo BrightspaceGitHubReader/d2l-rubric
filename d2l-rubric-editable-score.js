@@ -17,13 +17,13 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			:host {
 				display: block;
 			}
+			:host([overridden-styling]) {
+					border-radius: 0.3rem;
+					background-color: var(--d2l-color-celestine-plus-2);
+			}
 			@media screen and (min-width: 615px) {
 				:host {
 					padding: 0.5rem 0.5rem 0.5rem 0.6rem;
-				}
-				:host([override-styling]) {
-					border-radius: 0.3rem;
-					background-color: var(--d2l-color-celestine-plus-2);
 				}
 				:host(:hover:not([editor-styling]))  {
 					padding: calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.6rem - 1px);
@@ -81,7 +81,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 		<div class$="[[_getContainerClassName(criterionHref)]]" hidden="[[!_isEditingScore(criterionNum, editingScore)]]">
 			<d2l-button-subtle class="clear-override-button-mobile" id="clear-button" text="[[localize('clearOverride')]]" on-tap="_clearCriterionOverride" hidden$="[[!scoreOverridden]]">
 			</d2l-button-subtle>
-			<b class="override-label" hidden$="[[scoreOverridden]]">[[localize('overrideLabel')]]</b>
+			<div class="override-label" hidden$="[[scoreOverridden]]">[[localize('overrideLabel')]]</div>
 			<d2l-input-text id="text-area" value="[[getScore(entity, assessmentResult, totalScore)]]" type="number" step="any" min="0" max="100000" on-blur="_blurHandler" on-keypress="_handleKey" prevent-submit="">
 			</d2l-input-text>
 			<div id="out-of" class="right">[[_localizeOutOf(entity)]]</div>
@@ -125,10 +125,11 @@ Polymer({
 			type: Boolean,
 			value: false,
 		},
-		overrideStyling: {
+		overriddenStyling: {
 			type: Boolean,
 			value: false,
-			reflectToAttribute: true
+			reflectToAttribute: true,
+			notify: true
 		},
 		editorStyling: {
 			type: Boolean,
@@ -186,12 +187,12 @@ Polymer({
 
 		if (this.totalScore) {
 			this.scoreOverridden = this.isTotalScoreOverridden();
-			this.overrideStyling = this.scoreOverridden;
+			this.overriddenStyling = this.scoreOverridden;
 			this._hasFocus = this.scoreOverridden;
 			return;
 		}
 		this.scoreOverridden = this.isScoreOverridden(this.criterionHref);
-		this.overrideStyling = this.scoreOverridden;
+		this.overriddenStyling = this.scoreOverridden;
 		this._hasFocus = this.scoreOverridden;
 	},
 
@@ -338,12 +339,12 @@ Polymer({
 		}
 		if (this._isEditingScore(criterionNum, editingScore)) {
 			this.editorStyling = true;
-			this.overrideStyling = false;
+			this.overriddenStyling = false;
 		}
 		if (!this._isEditingScore(criterionNum, editingScore)) {
 			this.editorStyling = false;
 			if (this.scoreOverridden) {
-				this.overrideStyling = true;
+				this.overriddenStyling = true;
 			}
 		}
 	}

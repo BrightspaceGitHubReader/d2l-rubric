@@ -17,6 +17,9 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-levels-mobile">
 			:host{
 				display:block;
 			}
+			:host([overridden-styling]) .out-of {	
+				background-color: var(--d2l-color-celestine-plus-2);
+			}
 			.levels-container {
 				display: inline-flex;
 				width: 100%;
@@ -155,7 +158,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-levels-mobile">
 				</template>
 			</div>
 			<div hidden$="[[!_hasOutOf(outOf)]]" class$="[[_getOutOfClassName(editingScore)]]" tabindex="0" on-keypress="_handleOverrideScoreKeypress">
-				<d2l-rubric-editable-score id="score-inner" class$="[[_getScoreWrapperClassName(criterionHref, editingScore)]]" criterion-href="[[criterionHref]]" assessment-href="[[assessmentHref]]" token="[[token]]" read-only="[[readOnly]]" editing-score="{{editingScore}}" on-tap="_handleOverrideScore">
+				<d2l-rubric-editable-score id="score-inner" class$="[[_getScoreWrapperClassName(criterionHref, editingScore)]]" criterion-href="[[criterionHref]]" assessment-href="[[assessmentHref]]" token="[[token]]" read-only="[[readOnly]]" editing-score="{{editingScore}}" overridden-styling="{{overriddenStyling}}" on-tap="_handleOverrideScore">
 				</d2l-rubric-editable-score>
 			</div>
 		</div>
@@ -227,6 +230,11 @@ Polymer({
 
 		editingScore: {
 			type: Object,
+			value: false
+		},
+		overriddenStyling: {
+			type: Boolean,
+			reflectToAttribute: true,
 			value: false
 		}
 	},
