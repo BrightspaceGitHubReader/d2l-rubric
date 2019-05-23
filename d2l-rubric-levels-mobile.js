@@ -114,14 +114,16 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-levels-mobile">
 				padding: 0 5px;
 				flex: 0 0 auto;
 			}
+			:host([editor-styling]) .out-of {	
+				padding: 6px 18px 6px 6px;
+			}
 			.out-of:hover {
 				cursor: default;
 				background-color: transparent;
 			}
 			.out-of.editing {
-				width: calc(100% - 10px);
+				width: calc(100% - 20px);
 				height: 45px;
-				text-align: center;
 				margin-bottom: 5px;
 				margin-left: 5px;
 				display: block;

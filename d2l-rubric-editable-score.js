@@ -34,10 +34,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			}
 			.total-score-container {
 				display: flex;
-				justify-content: center;
+				justify-content: space-between;
 			}
 			.editing-component {
-				display: inline-block;
+				display: inline-flex;
 			}
 			d2l-input-text {
 				width:75px;
@@ -56,6 +56,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			.right {
 				display: inline;
 				padding: 0 5px;
+				line-height: 2.2rem;
 			}
 			.clear-override-button-mobile {
 				display: none;
@@ -64,23 +65,20 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				display: none;
 			} 
 			@media screen and (max-width: 614px) {
-				:host {
-					display: flex;
-					justify-content: space-between;
-				}
 				.clear-override-button-mobile {
-					display: inline-block;
+					display: inline-flex;
 				}
 				.override-label {
-					margin-left: 0;	
-					display: inline-block;
+					margin-left: 12px;	
+					margin-top: 8px;
+					display: block;
 					font-size: 15px;
 					font-weight: bold;
 					color: var(--d2l-color-ferrite) !important;
 				}
 				.editing-component {
 				 	margin-right: 0;
-					display: inline-block;
+					display: inline-flex;
 				}
 			}
 			[hidden] {
@@ -91,7 +89,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 		<rubric-siren-entity href="[[criterionHref]]" token="[[token]]" entity="{{entity}}"></rubric-siren-entity>
 		<iron-media-query query="(min-width: 615px)" query-matches="{{_largeScreen}}"></iron-media-query>
 		<div id="editable-wrapper">
-			<div class$="[[_getContainerClassName(criterionHref)]]" hidden="[[!_isEditingScore(criterionNum, editingScore)]]">
+			<div class="total-score-container" hidden="[[!_isEditingScore(criterionNum, editingScore)]]">
 				<d2l-button-subtle class="clear-override-button-mobile" id="clear-button" text="[[localize('clearOverride')]]" on-tap="_clearCriterionOverride" hidden$="[[!scoreOverridden]]">
 				</d2l-button-subtle>
 				<div class="override-label" hidden$="[[scoreOverridden]]">[[localize('overrideLabel')]]</div>
@@ -137,7 +135,7 @@ Polymer({
 		},
 		scoreOverridden: {
 			type: Boolean,
-			value: false,
+			value: false
 		},
 		overriddenStyling: {
 			type: Boolean,
