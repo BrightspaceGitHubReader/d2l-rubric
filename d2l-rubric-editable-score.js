@@ -7,6 +7,7 @@ import 's-html/s-html.js';
 import 'd2l-inputs/d2l-input-text.js';
 import './rubric-siren-entity.js';
 import 'd2l-tooltip/d2l-tooltip.js';
+import '@polymer/iron-media-query/iron-media-query.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 const $_documentContainer = document.createElement('template');
@@ -25,7 +26,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				:host {
 					padding: 0.5rem 0.5rem 0.5rem 0.6rem;
 				}
-				:host(:hover:not([editor-styling]))  {
+				:host(:hover:not([editor-styling])) {
 					padding: calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.6rem - 1px);
 					border-radius: 0.3rem;
 					border: 1px solid var(--d2l-color-celestine);
@@ -34,6 +35,9 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			.total-score-container {
 				display: flex;
 				justify-content: center;
+			}
+			.editing-component {
+				display: inline-block;
 			}
 			d2l-input-text {
 				width:75px;
@@ -60,16 +64,23 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				display: none;
 			} 
 			@media screen and (max-width: 614px) {
+				:host {
+					display: flex;
+					justify-content: space-between;
+				}
 				.clear-override-button-mobile {
-					display: inline;
-					margin-right: 35%;
+					display: inline-block;
 				}
 				.override-label {
-					display: inline;
-					margin-right: 35%;
+					margin-left: 0;	
+					display: inline-block;
 					font-size: 15px;
 					font-weight: bold;
 					color: var(--d2l-color-ferrite) !important;
+				}
+				.editing-component {
+				 	margin-right: 0;
+					display: inline-block;
 				}
 			}
 			[hidden] {
@@ -78,23 +89,26 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 		</style>
 		<rubric-siren-entity href="[[assessmentHref]]" token="[[token]]" entity="{{assessmentEntity}}"></rubric-siren-entity>
 		<rubric-siren-entity href="[[criterionHref]]" token="[[token]]" entity="{{entity}}"></rubric-siren-entity>
-		<div class$="[[_getContainerClassName(criterionHref)]]" hidden="[[!_isEditingScore(criterionNum, editingScore)]]">
-			<d2l-button-subtle class="clear-override-button-mobile" id="clear-button" text="[[localize('clearOverride')]]" on-tap="_clearCriterionOverride" hidden$="[[!scoreOverridden]]">
-			</d2l-button-subtle>
-			<div class="override-label" hidden$="[[scoreOverridden]]">[[localize('overrideLabel')]]</div>
-			<d2l-input-text id="text-area" value="[[getScore(entity, assessmentResult, totalScore)]]" type="number" step="any" min="0" max="100000" on-blur="_blurHandler" on-keypress="_handleKey" prevent-submit="">
-			</d2l-input-text>
-			<div id="out-of" class="right">[[_localizeOutOf(entity)]]</div>
+		<iron-media-query query="(min-width: 615px)" query-matches="{{_largeScreen}}"></iron-media-query>
+		<div id="editable-wrapper">
+			<div class$="[[_getContainerClassName(criterionHref)]]" hidden="[[!_isEditingScore(criterionNum, editingScore)]]">
+				<d2l-button-subtle class="clear-override-button-mobile" id="clear-button" text="[[localize('clearOverride')]]" on-tap="_clearCriterionOverride" hidden$="[[!scoreOverridden]]">
+				</d2l-button-subtle>
+				<div class="override-label" hidden$="[[scoreOverridden]]">[[localize('overrideLabel')]]</div>
+				<div class="editing-component">
+					<d2l-input-text id="text-area" value="[[getScore(entity, assessmentResult, totalScore)]]" type="number" step="any" min="0" max="100000" on-blur="_blurHandler" on-keypress="_handleKey" prevent-submit="">
+					</d2l-input-text>
+					<div id="out-of" class="right">[[_localizeOutOf(entity)]]</div>
+				</div>	
+			</div>
+			<template is="dom-if" if="[[!_isEditingScore(criterionNum, editingScore)]]">
+				<div class$="[[_getOutOfClassName(scoreOverridden)]]" id="out-of-container">
+					[[_localizeOutOf(entity, assessmentResult, totalScore)]]
+					<div class="star" id="score-overridden-star">*</div>
+				</div>
+			</template>
 		</div>
-		<div hidden="[[_isEditingScore(criterionNum, editingScore)]]" class$="[[_getOutOfClassName(scoreOverridden)]]" id="out-of-container">
-			[[_localizeOutOf(entity, assessmentResult, totalScore)]]
-			<div class="star" id="score-overridden-star">*</div>
-			<d2l-tooltip for="score-overridden-star" position="bottom">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
-		</div>
-		<d2l-tooltip id="override-tooltip" hidden$="[[!scoreOverridden]]" force-show="[[_hasFocus]]" for="out-of-container" position="top">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
-	</template>
-
-	
+		<d2l-tooltip id="override-tooltip" hidden="[[_handleTooltip(scoreOverridden,criterionNum, editingScore)]]" for="editable-wrapper" position="top">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -106,7 +120,7 @@ Polymer({
 
 		/* Entity could be a criterionEntity or a rubricEntity */
 		entity: Object,
-
+		_largeScreen: Boolean,
 		assessmentHref: {
 			type: String,
 			value: null
@@ -151,10 +165,6 @@ Polymer({
 		parentCell: {
 			type: Object,
 			value: null
-		},
-		_hasFocus: {
-			type: Boolean,
-			value: false
 		}
 	},
 
@@ -168,18 +178,7 @@ Polymer({
 		'_totalScoreChanged(totalScore, entity)',
 		'_editingState(entity,criterionNum, editingScore)'
 	],
-	ready: function() {
-		this._onTapAnywhere = this._onTapAnywhere.bind(this);
-	},
-	attached: function() {
-		document.addEventListener('click', this._onTapAnywhere);
-	},
-	detached: function() {
-		document.removeEventListener('click', this._onTapAnywhere);
-	},
-	_onTapAnywhere: function() {
-		this._hasFocus = false;
-	},
+
 	_onAssessmentResultChanged: function(entity, assessmentResult) {
 		if (!entity || !assessmentResult) {
 			return;
@@ -188,19 +187,17 @@ Polymer({
 		if (this.totalScore) {
 			this.scoreOverridden = this.isTotalScoreOverridden();
 			this.overriddenStyling = this.scoreOverridden;
-			this._hasFocus = this.scoreOverridden;
 			return;
 		}
 		this.scoreOverridden = this.isScoreOverridden(this.criterionHref);
 		this.overriddenStyling = this.scoreOverridden;
-		this._hasFocus = this.scoreOverridden;
 	},
 
 	focus: function() {
 		var elem = this.$['text-area'];
 		elem.focus();
 		var inputElem = elem.$$('input');
-		if (inputElem) {
+		if (inputElem && this._largeScreen) {
 			elem.$$('input').select();
 		}
 	},
@@ -347,5 +344,8 @@ Polymer({
 				this.overriddenStyling = true;
 			}
 		}
+	},
+	_handleTooltip: function(scoreOverridden, criterionNum, editingScore) {
+		return !scoreOverridden || this._isEditingScore(criterionNum, editingScore);
 	}
 });

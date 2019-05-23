@@ -146,6 +146,12 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric">
 					margin-top: 24px;
 				}
 			}
+			@media screen and (min-width: 615px) {
+				.score-wrapper.assessable:hover {
+					padding: calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.6rem - 1px);
+				}
+			}
+			
 			.overall-feedback-header {
 				@apply --d2l-label-text;
 				padding-top: 1.5rem;
