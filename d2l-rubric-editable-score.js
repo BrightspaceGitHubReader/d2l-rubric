@@ -34,13 +34,17 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			}
 			.total-score-container {
 				display: flex;
+				justify-content: center;
+			}
+			.criterion-score-container {
+				display: flex;
 				justify-content: space-between;
 			}
 			.editing-component {
-				display: inline-flex;
+				display: inline;
 			}
 			d2l-input-text {
-				width:75px;
+				width: 75px;
 			}
 			.score-out-of.overridden {
 				color: var(--d2l-color-celestine);
@@ -48,15 +52,14 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			}
 			.star {
 				display: none;
-				padding: 0 5px;
 			}
 			.score-out-of.overridden .star {
 				display: inline-flex;
 			}
 			.right {
 				display: inline;
-				padding: 0 5px;
 				line-height: 2.2rem;
+				font-size: 15px;
 			}
 			.clear-override-button-mobile {
 				display: none;
@@ -67,18 +70,22 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 			@media screen and (max-width: 614px) {
 				.clear-override-button-mobile {
 					display: inline-flex;
+					padding: 6px 0;
 				}
 				.override-label {
 					margin-left: 12px;	
-					margin-top: 8px;
-					display: block;
+					padding: 6px 0;
+					display: inline-flex;
 					font-size: 15px;
 					font-weight: bold;
 					color: var(--d2l-color-ferrite) !important;
+					align-items : center;
 				}
 				.editing-component {
 				 	margin-right: 0;
 					display: inline-flex;
+					padding: 6px 12px 6px 0;
+					align-items : center;
 				}
 			}
 			[hidden] {
@@ -88,11 +95,13 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 		<rubric-siren-entity href="[[assessmentHref]]" token="[[token]]" entity="{{assessmentEntity}}"></rubric-siren-entity>
 		<rubric-siren-entity href="[[criterionHref]]" token="[[token]]" entity="{{entity}}"></rubric-siren-entity>
 		<iron-media-query query="(min-width: 615px)" query-matches="{{_largeScreen}}"></iron-media-query>
-		<div id="editable-wrapper">
-			<div class="total-score-container" hidden="[[!_isEditingScore(criterionNum, editingScore)]]">
-				<d2l-button-subtle class="clear-override-button-mobile" id="clear-button" text="[[localize('clearOverride')]]" on-tap="_clearCriterionOverride" hidden$="[[!scoreOverridden]]">
-				</d2l-button-subtle>
-				<div class="override-label" hidden$="[[scoreOverridden]]">[[localize('overrideLabel')]]</div>
+		<div id="editable-container">
+			<div class$="[[_getContainerClassName(criterionHref)]]" hidden="[[!_isEditingScore(criterionNum, editingScore)]]">
+				<template is="dom-if" if="[[!totalScore]]">
+					<d2l-button-subtle class="clear-override-button-mobile" id="clear-button" text="[[localize('clearOverride')]]" on-tap="_clearCriterionOverride" hidden$="[[!scoreOverridden]]">
+					</d2l-button-subtle>
+					<div class="override-label" hidden$="[[scoreOverridden]]">[[localize('overrideLabel')]]</div>
+				</template>
 				<div class="editing-component">
 					<d2l-input-text id="text-area" value="[[getScore(entity, assessmentResult, totalScore)]]" type="number" step="any" min="0" max="100000" on-blur="_blurHandler" on-keypress="_handleKey" prevent-submit="">
 					</d2l-input-text>
@@ -106,7 +115,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				</div>
 			</template>
 		</div>
-		<d2l-tooltip id="override-tooltip" hidden="[[_handleTooltip(scoreOverridden,criterionNum, editingScore)]]" for="editable-wrapper" position="top">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
+		<d2l-tooltip id="override-tooltip" hidden="[[_handleTooltip(scoreOverridden,criterionNum, editingScore)]]" for="editable-container" position="top">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -302,7 +311,7 @@ Polymer({
 		if (!criterionHref) {
 			return 'total-score-container';
 		}
-		return '';
+		return 'criterion-score-container';
 	},
 
 	_isEditingScore: function(criterionNum, editingScore) {

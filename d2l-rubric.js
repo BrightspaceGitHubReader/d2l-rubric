@@ -86,6 +86,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric">
 			.out-of-score-container {
 				margin-left: auto;
 				display: inline-flex;
+				align-items: center;
 			}
 			.clear-override-button {
 				flex-grow: 1;
@@ -102,6 +103,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric">
 				margin-top: 0.5rem;
 				margin-bottom: 0.5rem;
 				display: flex;
+				align-items: center;
 			}
 			.out-of-loader {
 				margin-top: 24px;

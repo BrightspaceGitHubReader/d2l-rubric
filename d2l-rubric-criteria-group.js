@@ -203,7 +203,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric-criteria-gro
 							</d2l-rubric-criterion-cell></d2l-td>
 						</template>
 						<template is="dom-if" if="[[_hasOutOf(entity)]]">
-							<d2l-td class$="[[_getOutOfClassName(criterion, assessmentResult)]]"  tabindex$="[[_handleTabIndex()]]">
+							<d2l-td class$="[[_getOutOfClassName(criterion, assessmentResult)]]">
 								<d2l-rubric-editable-score id="score-inner[[criterionNum]]" on-tap="_handleOverrideScore" on-keypress="_handleScoreKeypress" class="score-wrapper" criterion-href="[[_getSelfLink(criterion)]]" assessment-href="[[assessmentHref]]" token="[[token]]" read-only="[[readOnly]]" editing-score="{{editingScore}}" criterion-num="[[criterionNum]]" parent-cell="[[editableScoreContainer]]">
 								</d2l-rubric-editable-score>
 							</d2l-td>

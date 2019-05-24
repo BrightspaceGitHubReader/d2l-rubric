@@ -111,11 +111,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-levels-mobile">
 				min-width: 40px;
 				margin-left: 15px;
 				margin-right: 5px;
-				padding: 0 5px;
+				padding: 0 6px;
 				flex: 0 0 auto;
-			}
-			:host([editor-styling]) .out-of {	
-				padding: 6px 18px 6px 6px;
 			}
 			.out-of:hover {
 				cursor: default;
@@ -123,7 +120,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-levels-mobile">
 			}
 			.out-of.editing {
 				width: calc(100% - 20px);
-				height: 45px;
+				height: 55px;
 				margin-bottom: 5px;
 				margin-left: 5px;
 				display: block;
