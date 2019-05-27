@@ -154,7 +154,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 					<div class$="[[_getLevelNameClass(_levelEntities, _selected, _assessedLevelHref)]]">
 						<div class="level-text"> [[_getSelectedLevelText(_selected, _levelEntities, criterionCell)]] </div>
 						<d2l-icon class="level-bullet" icon="d2l-tier1:bullet"></d2l-icon>
-						<div> [[_getSelectedNumberText(_selected, _levelEntities, criterionCell)]] </div>
+						<div> [[_getSelectedNumberText(_selected, _levelEntities)]] </div>
 					</div>
 					<div hidden="[[!_hasDescription(criterionCell)]]" class="criterion-description">
 						<s-html class="criterion-description-html" html="[[_getCriterionCellText(criterionCell)]]"></s-html>
@@ -354,22 +354,12 @@ Polymer({
 		return points;
 	},
 
-	_getSelectedLevelText: function(selected, levels, criterionCell) {
+	_getSelectedLevelText: function(selected, levels) {
 		if (!levels || !levels[selected]) {
 			return null;
 		}
 
-		var points = this._getPoints(selected, levels, criterionCell);
-
 		var levelTitle = levels[selected].properties.name;
-		if (points === undefined || points === null) {
-			return levelTitle;
-		}
-		// eslint-disable-next-line no-console
-		console.log(levelTitle);
-		if (this.isNumeric || this.isHolistic) {
-			return this.localize('levelNameAndBulletPoint', 'levelName', levelTitle);
-		}
 		return levelTitle;
 	},
 
