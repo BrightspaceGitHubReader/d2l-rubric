@@ -49,7 +49,7 @@ D2L.PolymerBehaviors.Rubric.LocalizeBehavior.LangEnBehavior = {
 		'levelAppended': 'A new level has been added after {name}',
 		'levelDeleted': '{name} level deleted',
 		'levelName': 'Level name',
-		'levelNameAndBulletPoint': '{levelName} \u2022',
+		'levelNameAndBulletPoint': '{levelName}',
 		'numberAndPoints': '{number} {number, plural, one {point} other {points}}',
 		'numberAndPercentage': '{number} %',
 		'levelPoints': 'Level points',

@@ -29,11 +29,11 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 				@apply --d2l-body-small-text;
 				display: inline-flex;
 				width:100%;
-				margin-top: 0.33rem;
+				margin-top: 24px;
 				margin-bottom: 0.33rem;
 			}
 			.criterion-description {
-				padding-top: 0.33rem;
+				padding-top: 6px;
 			}
 			.criterion-description-html {
 				display: block;
@@ -85,29 +85,32 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 			}
 			.criterion-prev-container {
 				margin-left: -7px;
-				margin-right: 12px;
+				margin-right: 22px;
 			}
 			.criterion-next-container {
-				margin-left: 12px;
+				margin-left: 22px;
 				margin-right: -7px;
 			}
 			d2l-button-icon {
-				left: 50%;
-				height: 100%;
+				height: 90%;
 				position: absolute;
 				top: 50%;
 				transform: translate(-50%, -50%);
-				--d2l-button-icon-min-height: 100%;
-				--d2l-button-icon-min-width: 23px;
+				--d2l-button-icon-min-height: 90%;
+			}
+			#left-chevron {
+				left: 85%;
 			}
 			.level-name {
 				display: flex;
 			}
 			.level-text {
 				font-weight: bold;
-				padding-right: 4px;
 			}
 			.level-name.assessed {
+				color: var(--d2l-color-celestine-minus-1);
+			}
+			.level-bullet {
 				color: var(--d2l-color-celestine-minus-1);
 			}
 			[hidden] {
@@ -144,12 +147,13 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 
 		<div id="description" class="criterion-description-container">
 			<div class="criterion-prev-container" hidden="[[_hideLeftChevron(_selected)]]" on-tap="_handleTapLeft">
-				<d2l-button-icon icon="d2l-tier1:chevron-left"></d2l-button-icon>
+				<d2l-button-icon id="left-chevron" icon="d2l-tier1:chevron-left"></d2l-button-icon>
 			</div>
 			<template is="dom-repeat" items="[[_criterionCells]]" as="criterionCell" indexas="index">
 				<div id="level-description-panel[[index]]" class="criterion-middle" aria-labelledby$="level-tab[[index]]" role="tabpanel" hidden="[[!_isLevelSelected(index, _selected)]]">
 					<div class$="[[_getLevelNameClass(_levelEntities, _selected, _assessedLevelHref)]]">
 						<div class="level-text"> [[_getSelectedLevelText(_selected, _levelEntities, criterionCell)]] </div>
+						<d2l-icon class="level-bullet" icon="d2l-tier1:bullet"></d2l-icon>
 						<div> [[_getSelectedNumberText(_selected, _levelEntities, criterionCell)]] </div>
 					</div>
 					<div hidden="[[!_hasDescription(criterionCell)]]" class="criterion-description">
@@ -158,7 +162,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 				</div>
 			</template>
 			<div class="criterion-next-container" hidden="[[_hideRightChevron(_selected)]]" on-tap="_handleTapRight">
-				<d2l-button-icon icon="d2l-tier1:chevron-right"></d2l-button-icon>
+				<d2l-button-icon id="right-chevron" icon="d2l-tier1:chevron-right"></d2l-button-icon>
 			</div>
 		</div>
 	</template>
@@ -361,7 +365,8 @@ Polymer({
 		if (points === undefined || points === null) {
 			return levelTitle;
 		}
-
+		// eslint-disable-next-line no-console
+		console.log(levelTitle);
 		if (this.isNumeric || this.isHolistic) {
 			return this.localize('levelNameAndBulletPoint', 'levelName', levelTitle);
 		}
