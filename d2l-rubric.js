@@ -83,6 +83,15 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric">
 				color: var(--d2l-color-celestine);
 				cursor: pointer;
 			}
+			@media screen and (min-width: 615px) {
+				.score-wrapper.assessable:hover {
+					padding: calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.6rem - 1px);
+				}
+			}
+			.score-wrapper.editing,
+			.score-wrapper.assessable.editing:hover {
+				padding: 0 0.5rem 0 0.6rem;
+			}
 			.out-of-score-container {
 				margin-left: auto;
 				display: inline-flex;
@@ -148,12 +157,6 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric">
 					margin-top: 24px;
 				}
 			}
-			@media screen and (min-width: 615px) {
-				.score-wrapper.assessable:hover {
-					padding: calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.6rem - 1px);
-				}
-			}
-			
 			.overall-feedback-header {
 				@apply --d2l-label-text;
 				padding-top: 1.5rem;
@@ -203,7 +206,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-rubric">
 					<div class="out-of-score-container">
 						<d2l-button-subtle class="clear-override-button" icon="d2l-tier1:close-small" text="[[localize('clearOverride')]]" on-tap="clearTotalScoreOverride" hidden$="[[!_showClearTotalScoreButton(assessmentEntity)]]">
 						</d2l-button-subtle>
-						<d2l-rubric-editable-score id="total-score-inner" class$="[[_getOutOfClassName(assessmentEntity)]]" assessment-href="[[assessmentHref]]" token="[[token]]" read-only="[[readOnly]]" editing-score="{{editingScore}}" total-score="[[_score]]" entity="[[entity]]" on-tap="_handleOverrideScore" on-keypress="_handleScoreKeypress" tabindex="0">
+						<d2l-rubric-editable-score id="total-score-inner" class$="[[_getOutOfClassName(assessmentEntity, editingScore)]]" assessment-href="[[assessmentHref]]" token="[[token]]" read-only="[[readOnly]]" editing-score="{{editingScore}}" total-score="[[_score]]" entity="[[entity]]" on-tap="_handleOverrideScore" on-keypress="_handleScoreKeypress" tabindex="0">
 						</d2l-rubric-editable-score>
 					</div>
 				</div>
@@ -403,10 +406,13 @@ Polymer({
 		return !this.readOnly && this.canOverrideTotal(assessmentEntity);
 	},
 
-	_getOutOfClassName: function(assessmentEntity) {
+	_getOutOfClassName: function(assessmentEntity, editingScore) {
 		var className = 'score-wrapper right';
 		if (this._canEditScore(assessmentEntity)) {
 			className += ' assessable';
+		}
+		if (editingScore && editingScore !== -1) {
+			className += ' editing';
 		}
 		return className;
 	},

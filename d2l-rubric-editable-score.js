@@ -23,14 +23,14 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 					background-color: var(--d2l-color-celestine-plus-2);
 			}
 			@media screen and (min-width: 615px) {
-				:host {
+				:host(:not([editor-styling])) {
 					padding: 0.5rem 0.5rem 0.5rem 0.6rem;
 				}
 				:host(:hover:not([editor-styling])) {
 					padding: calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.5rem - 1px) calc(0.6rem - 1px);
 					border-radius: 0.3rem;
 					border: 1px solid var(--d2l-color-celestine);
-				}		
+				}
 			}
 			.total-score-container {
 				display: flex;
@@ -57,9 +57,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				display: inline-flex;
 			}
 			.right {
+				@apply --d2l-body-compact-text;
+				margin-left: 3px;
 				display: inline;
 				line-height: 2.2rem;
-				font-size: 15px;
 			}
 			.clear-override-button-mobile {
 				display: none;
@@ -115,7 +116,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				</div>
 			</template>
 		</div>
-		<d2l-tooltip id="override-tooltip" hidden="[[_handleTooltip(scoreOverridden,criterionNum, editingScore)]]" for="editable-container" position="top">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
+		<d2l-tooltip id="override-tooltip" hidden="[[_handleTooltip(scoreOverridden,criterionNum, editingScore)]]" for="editable-container" position="[[_getTooltipPosition(totalScore)]]">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -185,6 +186,13 @@ Polymer({
 		'_totalScoreChanged(totalScore, entity)',
 		'_editingState(entity,criterionNum, editingScore)'
 	],
+	ready: function() {
+		if (this._largeScreen && this.criterionHref) {
+			this.$['override-tooltip'].setAttribute(
+				'boundary',
+				'{left: 0, right: 200}');
+		}
+	},
 
 	_onAssessmentResultChanged: function(entity, assessmentResult) {
 		if (!entity || !assessmentResult) {
@@ -354,5 +362,8 @@ Polymer({
 	},
 	_handleTooltip: function(scoreOverridden, criterionNum, editingScore) {
 		return !scoreOverridden || this._isEditingScore(criterionNum, editingScore);
+	},
+	_getTooltipPosition: function(totalScore) {
+		return totalScore ? 'bottom' : 'top';
 	}
 });

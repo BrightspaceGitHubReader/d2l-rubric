@@ -589,7 +589,7 @@ Polymer({
 		}
 		var criterionNum = event.model.get('criterionNum');
 		this.editingScore = criterionNum;
-		this.editableScoreContainer = event.currentTarget;
+		this.editableScoreContainer = event.currentTarget.parentNode;
 	},
 
 	_handleScoreKeypress: function(event) {
