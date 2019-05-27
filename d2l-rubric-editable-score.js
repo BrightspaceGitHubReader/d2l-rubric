@@ -116,7 +116,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-editable-score">
 				</div>
 			</template>
 		</div>
-		<d2l-tooltip id="override-tooltip" hidden="[[_handleTooltip(scoreOverridden,criterionNum, editingScore)]]" for="editable-container" position="[[_getTooltipPosition(totalScore)]]">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
+		<d2l-tooltip id="override-tooltip" hidden="[[_handleTooltip(scoreOverridden,criterionNum, editingScore)]]" for="editable-container" position="top">[[_localizeStarLabel(totalScore)]]</d2l-tooltip>
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -362,8 +362,5 @@ Polymer({
 	},
 	_handleTooltip: function(scoreOverridden, criterionNum, editingScore) {
 		return !scoreOverridden || this._isEditingScore(criterionNum, editingScore);
-	},
-	_getTooltipPosition: function(totalScore) {
-		return totalScore ? 'bottom' : 'top';
 	}
 });
