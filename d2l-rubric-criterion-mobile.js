@@ -92,11 +92,11 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 				margin-right: -7px;
 			}
 			d2l-button-icon {
-				height: 90%;
+				height: 100%;
 				position: absolute;
 				top: 50%;
 				transform: translate(-50%, -50%);
-				--d2l-button-icon-min-height: 90%;
+				--d2l-button-icon-min-height: 100%;
 			}
 			#left-chevron {
 				left: 85%;
@@ -107,10 +107,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 			.level-text {
 				font-weight: bold;
 			}
+			.level-bullet.assessed,
 			.level-name.assessed {
-				color: var(--d2l-color-celestine-minus-1);
-			}
-			.level-bullet {
 				color: var(--d2l-color-celestine-minus-1);
 			}
 			[hidden] {
@@ -153,7 +151,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 				<div id="level-description-panel[[index]]" class="criterion-middle" aria-labelledby$="level-tab[[index]]" role="tabpanel" hidden="[[!_isLevelSelected(index, _selected)]]">
 					<div class$="[[_getLevelNameClass(_levelEntities, _selected, _assessedLevelHref)]]">
 						<div class="level-text"> [[_getSelectedLevelText(_selected, _levelEntities, criterionCell)]] </div>
-						<d2l-icon class="level-bullet" icon="d2l-tier1:bullet"></d2l-icon>
+						<d2l-icon hidden="[[!_showLevelBullet()]]" class$="[[_getLevelBulletClass(_levelEntities, _selected, _assessedLevelHref)]]" icon="d2l-tier1:bullet"></d2l-icon>
 						<div> [[_getSelectedNumberText(_selected, _levelEntities)]] </div>
 					</div>
 					<div hidden="[[!_hasDescription(criterionCell)]]" class="criterion-description">
@@ -401,6 +399,15 @@ Polymer({
 		}
 		return className;
 	},
+	_getLevelBulletClass: function(levelEntities, selected, assessedLevelHref) {
+		var className = 'level-bullet';
+		if (levelEntities && levelEntities[selected] && assessedLevelHref) {
+			if (this._getSelfLink(levelEntities[selected]) === assessedLevelHref) {
+				className += ' assessed';
+			}
+		}
+		return className;
+	},
 
 	_getActivityLink: function(entity) {
 		var link = entity && entity.getLinkByRel(this.HypermediaRels.Activities.activityUsage);
@@ -415,5 +422,8 @@ Polymer({
 		) {
 			return D2L.Custom.Outcomes.TermTitleText;
 		}
+	},
+	_showLevelBullet: function() {
+		return !!(this.isNumeric || this.isHolistic);
 	}
 });
