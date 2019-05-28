@@ -150,9 +150,9 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-rubric-criterion-mobile">
 			<template is="dom-repeat" items="[[_criterionCells]]" as="criterionCell" indexas="index">
 				<div id="level-description-panel[[index]]" class="criterion-middle" aria-labelledby$="level-tab[[index]]" role="tabpanel" hidden="[[!_isLevelSelected(index, _selected)]]">
 					<div class$="[[_getLevelNameClass(_levelEntities, _selected, _assessedLevelHref)]]">
-						<div class="level-text"> [[_getSelectedLevelText(_selected, _levelEntities, criterionCell)]] </div>
+						<div class="level-text"> [[_getSelectedLevelText(_selected, _levelEntities)]] </div>
 						<d2l-icon hidden="[[!_showLevelBullet()]]" class$="[[_getLevelBulletClass(_levelEntities, _selected, _assessedLevelHref)]]" icon="d2l-tier1:bullet"></d2l-icon>
-						<div> [[_getSelectedNumberText(_selected, _levelEntities)]] </div>
+						<div> [[_getSelectedNumberText(_selected, _levelEntities, criterionCell)]] </div>
 					</div>
 					<div hidden="[[!_hasDescription(criterionCell)]]" class="criterion-description">
 						<s-html class="criterion-description-html" html="[[_getCriterionCellText(criterionCell)]]"></s-html>
