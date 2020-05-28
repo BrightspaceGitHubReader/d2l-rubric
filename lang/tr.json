@@ -52,7 +52,7 @@
    "editRubric" : "Rubriği Düzenle",
    "errorText" : "Üzgünüz! Bağlantı kurulurken bir sorunla karşılaşıldı. Sayfayı yenileyin veya daha sonra tekrar deneyin.",
    "feedback" : "Geri Bildirim",
-   "feedbackOn" : "{critionName} hakkında geri bildirim",
+   "feedbackOn" : "{criterionName} hakkında geri bildirim",
    "feedbackSaveFailed" : "Geri bildirim kaydedilemedi",
    "groupAdded" : "Yeni bir kriter grubu eklendi",
    "groupName" : "Kriter grubu adı",
