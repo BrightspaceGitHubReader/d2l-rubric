@@ -17,7 +17,7 @@
    "cellPoints" : "Pwyntiau celloedd y maen prawf",
    "changeConfirmationNo" : "Canslo",
    "changeConfirmationYes" : "Parhau",
-   "changeRubricStatusSuccessful" : "Mae statws y gyfeireb wedi newid i {statws}",
+   "changeRubricStatusSuccessful" : "Mae statws y gyfeireb wedi newid i {status}",
    "changeRubricTypeSuccessful" : "Mae math y gyfeireb wedi newid i {rubricType}",
    "changeRubricTypeWarnMessage" : "Gallai newid eich cyfeireb o ddadansoddol i gyfannol arwain at golli data.",
    "changeRubricTypeWarnTitle" : "Newid math y gyfeireb?",
